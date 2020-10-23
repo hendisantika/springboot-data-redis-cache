@@ -1,4 +1,4 @@
-package com.hendisantika.springbootdatarediscache;
+package com.hendisantika.springbootdatarediscache.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
