@@ -1,5 +1,6 @@
 package com.hendisantika.springbootdatarediscache.config;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,11 @@ public class CustomCacheResolver implements CacheResolver {
 
     private final CacheManager cacheManager;
 
-    private final Map<String, String> mapNameConfig = new HashMap<String, String>();
+    private final Map<String, String> mapNameConfig = new HashMap<>();
+
+    @PostConstruct
+    public void init() {
+        mapNameConfig.put("10m-", "10");
+        mapNameConfig.put("20m-", "20");
+    }
 }
