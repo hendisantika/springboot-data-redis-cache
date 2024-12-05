@@ -1,6 +1,7 @@
 package com.hendisantika.springbootdatarediscache.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +17,17 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class CacheService {
+    //cacheResolver - must point to our customCacheResolver component
+    @Cacheable(value = "10m-cache-ttl", key = "'somename'", cacheResolver = "customCacheResolver")
+    public String get10MinTTL() {
+        try {
+            log.warn("Thread sleeping for 5 seconds");
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            log.warn("Thread sleep interrupted");
+        }
+        return "Hello World from 10m";
+    }
+
 
 }
