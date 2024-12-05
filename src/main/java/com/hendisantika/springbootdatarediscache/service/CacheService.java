@@ -40,4 +40,15 @@ public class CacheService {
         }
         return "Hello World from 20m";
     }
+
+    @Cacheable("default-cache")
+    public String getData() {
+        try {
+            log.warn("Thread sleeping for 5 seconds");
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            log.warn("Thread sleep interrupted");
+        }
+        return "Hello World";
+    }
 }
