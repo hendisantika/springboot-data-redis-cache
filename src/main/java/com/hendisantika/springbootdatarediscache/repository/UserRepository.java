@@ -37,4 +37,9 @@ public class UserRepository {
     public Map<String, User> getAll() {
         return hashOperations.entries("USER");
     }
+
+    public void update(User user) {
+        hashOperations.put("USER", user.getUserId(), user);
+        log.info("User with ID {} updated", user.getUserId());
+    }
 }
