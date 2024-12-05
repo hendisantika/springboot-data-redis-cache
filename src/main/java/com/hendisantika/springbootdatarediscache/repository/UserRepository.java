@@ -42,4 +42,9 @@ public class UserRepository {
         hashOperations.put("USER", user.getUserId(), user);
         log.info("User with ID {} updated", user.getUserId());
     }
+
+    public void delete(String userId) {
+        hashOperations.delete("USER", userId);
+        log.info("User with ID {} deleted", userId);
+    }
 }
