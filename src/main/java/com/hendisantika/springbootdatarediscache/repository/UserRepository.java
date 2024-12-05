@@ -1,5 +1,6 @@
 package com.hendisantika.springbootdatarediscache.repository;
 
+import com.hendisantika.springbootdatarediscache.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -22,4 +23,8 @@ public class UserRepository {
 
     private final HashOperations hashOperations;
 
+    public void create(User user) {
+        hashOperations.put("USER", user.getUserId(), user);
+        log.info("User with ID {} saved", user.getUserId());
+    }
 }
