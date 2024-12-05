@@ -31,4 +31,9 @@ public class Controller {
     public String getData10TTL() {
         return redisCacheService.get10MinTTL();
     }
+
+    @GetMapping("/get/datattl/20")
+    public String getData20TTL() {
+        return redisCacheService.get20MinTTL();
+    }
 }
