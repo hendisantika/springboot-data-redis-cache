@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-data-redis-cache
@@ -30,5 +32,9 @@ public class UserRepository {
 
     public User get(String userId) {
         return (User) hashOperations.get("USER", userId);
+    }
+
+    public Map<String, User> getAll() {
+        return hashOperations.entries("USER");
     }
 }
