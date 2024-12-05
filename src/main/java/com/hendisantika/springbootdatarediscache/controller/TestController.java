@@ -26,4 +26,9 @@ public class Controller {
     public String getData() {
         return redisCacheService.getData();
     }
+
+    @GetMapping("/get/datattl/10")
+    public String getData10TTL() {
+        return redisCacheService.get10MinTTL();
+    }
 }
