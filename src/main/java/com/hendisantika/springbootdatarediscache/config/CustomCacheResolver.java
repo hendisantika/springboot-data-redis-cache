@@ -8,8 +8,11 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.CacheOperationInvocationContext;
 import org.springframework.cache.interceptor.CacheResolver;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,5 +69,17 @@ public class CustomCacheResolver implements CacheResolver {
         // this should not reach here
         log.warn("CustomCacheResolver context is empty");
         return Collections.emptyList();
+    }
+
+    private CustomCache cacheWithCustomTTL(String cacheName, Cache cache) {
+        int ttl = namePartOfPrefix(cacheName);
+
+        RedisCache redisCache = (RedisCache) cache;
+
+        RedisCacheWriter cacheWriter = redisCache.getNativeCache();
+        RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(ttl));
+        CustomCache customCache = new CustomCache(cacheName, cacheWriter, cacheConfig);
+        return customCache;
     }
 }
