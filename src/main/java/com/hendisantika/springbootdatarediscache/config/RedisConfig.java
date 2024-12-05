@@ -1,5 +1,6 @@
 package com.hendisantika.springbootdatarediscache.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -22,12 +23,22 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {
+    @Value("${spring.data.redis.host}")
+    private String host;
+
+    @Value("${spring.data.redis.username}")
+    private String username;
+
+    @Value("${spring.data.redis.password}")
+    private String password;
 
     @Bean
     public JedisConnectionFactory connectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("localhost");
+        configuration.setHostName(host);
         configuration.setPort(6379);
+        configuration.setUsername(username);
+        configuration.setPassword(password);
         return new JedisConnectionFactory(configuration);
     }
 
