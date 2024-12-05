@@ -27,4 +27,8 @@ public class UserRepository {
         hashOperations.put("USER", user.getUserId(), user);
         log.info("User with ID {} saved", user.getUserId());
     }
+
+    public User get(String userId) {
+        return (User) hashOperations.get("USER", userId);
+    }
 }
