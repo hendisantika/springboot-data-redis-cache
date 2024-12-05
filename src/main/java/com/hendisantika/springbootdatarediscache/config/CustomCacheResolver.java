@@ -8,6 +8,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.CacheOperationInvocationContext;
 import org.springframework.cache.interceptor.CacheResolver;
+import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.stereotype.Component;
@@ -81,5 +82,14 @@ public class CustomCacheResolver implements CacheResolver {
                 .entryTtl(Duration.ofMinutes(ttl));
         CustomCache customCache = new CustomCache(cacheName, cacheWriter, cacheConfig);
         return customCache;
+    }
+
+    private int namePartOfPrefix(String name) {
+        for (Map.Entry<String, String> entry : mapNameConfig.entrySet()) {
+            if (name.startsWith(entry.getKey())) {
+                return Integer.parseInt(entry.getValue());
+            }
+        }
+        return DEFAULT_TTL;
     }
 }
