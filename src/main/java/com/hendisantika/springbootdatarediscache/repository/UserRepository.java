@@ -4,6 +4,7 @@ import com.hendisantika.springbootdatarediscache.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -23,28 +24,32 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserRepository {
 
-    private final HashOperations hashOperations;
+    private final RedisTemplate redisTemplate;
+
+    private HashOperations hashOperations() {
+        return redisTemplate.opsForHash();
+    }
 
     public void create(User user) {
-        hashOperations.put("USER", user.getUserId(), user);
+        hashOperations().put("USER", user.getUserId(), user);
         log.info("User with ID {} saved", user.getUserId());
     }
 
     public User get(String userId) {
-        return (User) hashOperations.get("USER", userId);
+        return (User) hashOperations().get("USER", userId);
     }
 
     public Map<String, User> getAll() {
-        return hashOperations.entries("USER");
+        return hashOperations().entries("USER");
     }
 
     public void update(User user) {
-        hashOperations.put("USER", user.getUserId(), user);
+        hashOperations().put("USER", user.getUserId(), user);
         log.info("User with ID {} updated", user.getUserId());
     }
 
     public void delete(String userId) {
-        hashOperations.delete("USER", userId);
+        hashOperations().delete("USER", userId);
         log.info("User with ID {} deleted", userId);
     }
 }

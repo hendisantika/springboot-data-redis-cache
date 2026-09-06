@@ -1,7 +1,8 @@
 package com.hendisantika.springbootdatarediscache.repository;
 
 import com.hendisantika.springbootdatarediscache.entity.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,31 +17,32 @@ import java.util.List;
  * Date: 24/10/20
  * Time: 05.16
  */
+@Slf4j
 @Repository
+@RequiredArgsConstructor
 public class ProductDao {
 
     public static final String HASH_KEY = "Product";
 
-    @Autowired
-    private RedisTemplate template;
+    private final RedisTemplate redisTemplate;
 
     public Product save(Product product) {
-        template.opsForHash().put(HASH_KEY, product.getId(), product);
+        redisTemplate.opsForHash().put(HASH_KEY, product.getId(), product);
         return product;
     }
 
     public List<Product> findAll() {
-        return template.opsForHash().values(HASH_KEY);
+        return redisTemplate.opsForHash().values(HASH_KEY);
     }
 
     public Product findProductById(int id) {
-        System.out.println("called findProductById() from DB");
-        return (Product) template.opsForHash().get(HASH_KEY, id);
+        log.info("called findProductById() from DB");
+        return (Product) redisTemplate.opsForHash().get(HASH_KEY, id);
     }
 
 
     public String deleteProduct(int id) {
-        template.opsForHash().delete(HASH_KEY, id);
+        redisTemplate.opsForHash().delete(HASH_KEY, id);
         return "product removed !!";
     }
 }
